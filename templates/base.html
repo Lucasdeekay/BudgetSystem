@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget System</title>
+  <link rel="stylesheet" href="{% static 'mysite/budget.css' %}">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="{% static 'mysite/logo.png' %}" alt="Logo">
+      <h1>Dominion University Ibadan</h1>
+      
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <ul>
+        {% if not person %}
+        <li><a href="{% url 'MySite:home' %}">Home</a></li>
+        <li><a href="{% url 'MySite:reports' %}">Reports</a></li>
+        <li><a href="{% url 'MySite:logout' %}">Logout</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}
+    {% endblock content %}
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 Dominion University Ibadan. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'mysite/budget.js' %}"></script>
+</body>
+</html>
