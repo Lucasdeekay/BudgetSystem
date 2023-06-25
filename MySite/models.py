@@ -10,12 +10,18 @@ class Person(models.Model):
     username = models.CharField(max_length=25)
     email = models.EmailField()
 
+    def __str__(self):
+        return self.full_name
+
 
 class Expense(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField()
+
+    def __str__(self):
+        return self.title
 
 
 class Budget(models.Model):
@@ -24,4 +30,7 @@ class Budget(models.Model):
     income = models.DecimalField(max_digits=10, decimal_places=2)
     expenses = models.ManyToManyField(Expense)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField()
+
+    def __str__(self):
+        return self.title

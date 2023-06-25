@@ -46,19 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const income = parseFloat(document.getElementById('income').value);
       const expenses = Array.from(document.getElementsByClassName('expense'));
 
-      let totalExpenses = 0;
-      let all_expenses = "";
-      let all_costs = "";
+      let totalExpensesCost = 0;
+      let all_expense = "";
+      let all_cost = "";
 
       expenses.forEach((expense) => {
-        const expenseName = parseFloat(expense.querySelector('.expenseName').value);
+        const expenseName = expense.querySelector('.expenseName').value;
         const expensePrice = parseFloat(expense.querySelector('.expensePrice').value);
-        all_expenses += `${ expenseName },`;
-        all_costs += `${ expensePrice },`;
-        totalExpenses += expensePrice;
+        all_expense += `${ expenseName },`;
+        all_cost += `${ expensePrice },`;
+        totalExpensesCost += expensePrice;
       });
 
-      let budget = income - totalExpenses;
+      total_cost.value = totalExpensesCost;
+
+      let budget = income - totalExpensesCost;
       let budgetMessage = '';
       if (budget < 0) {
         budgetMessage = `You need an additional ${Math.abs(budget).toFixed(2)} to balance the budget.`;
@@ -68,14 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const currentTime = new Date().toLocaleString();
 
-      totalExpense.textContent = `Total Expense: ${totalExpenses.toFixed(2)}`;
+      totalExpense.textContent = `Total Expense: ${totalExpensesCost.toFixed(2)}`;
       calculationTime.textContent = `Calculation Time: ${currentTime}\n${budgetMessage}`;
       resultSection.classList.remove('hidden');
       printBtn.classList.remove('hidden');
 
-      total_cost.value = totalExpense;
       budget_title.value = budgetName;
       budget_income.value = income;
+      all_costs.value = all_cost;
+    all_expenses.value = all_expense;
   
       document.body.classList.add('animated', 'fadeIn');
     });

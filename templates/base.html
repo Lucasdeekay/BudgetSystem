@@ -19,10 +19,12 @@
   <nav>
     <div class="container">
       <ul>
-        {% if not person %}
+        {% if person %}
         <li><a href="{% url 'MySite:home' %}">Home</a></li>
         <li><a href="{% url 'MySite:reports' %}">Reports</a></li>
         <li><a href="{% url 'MySite:logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'MySite:login' %}">Login/Register</a></li>
         {% endif %}
       </ul>
     </div>

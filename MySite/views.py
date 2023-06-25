@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -79,12 +80,12 @@ class RegisterView(View):
 class HomeView(View):
     template_name = "mysite/home.html"
 
-    @method_decorator(login_required())
+    @method_decorator(login_required)
     def get(self, request):
         person = Person.objects.get(user=request.user)
         return render(request, self.template_name, {'person': person})
 
-    @method_decorator(login_required())
+    @method_decorator(login_required)
     def post(self, request):
         person = Person.objects.get(user=request.user)
         # Check if form is submitting
@@ -94,19 +95,26 @@ class HomeView(View):
             budget_income = request.POST.get("budget_income").strip()
             all_expenses = request.POST.get("all_expenses")
             all_costs = request.POST.get("all_costs")
-            total_cost = request.POST.get("total_cost").strip()
+            total_cost = request.POST.get("total_cost")
+
+            budget_income = float(budget_income)
+            total_cost = float(total_cost)
 
             budget = Budget.objects.create(person=person, title=budget_title, income=budget_income,
-                                           total_cost=total_cost)
+                                           total_cost=total_cost, date=timezone.now())
 
             all_expenses = all_expenses.split(",")
             all_costs = all_costs.split(",")
             zipped_expenses = zip(all_expenses, all_costs)
 
             for title, cost in zipped_expenses:
-                expense = Expense.objects.all(person=person, title=title, cost=cost)
-                budget.expenses.add(expense)
-                budget.save()
+                title = title.strip()
+                cost = cost.strip()
+                if title != "" or cost != "":
+                    cost = float(cost)
+                    expense = Expense.objects.create(person=person, title=title, cost=cost, date=timezone.now())
+                    budget.expenses.add(expense)
+                    budget.save()
 
             return HttpResponseRedirect(reverse("MySite:reports"))
 
@@ -114,15 +122,13 @@ class HomeView(View):
 class ReportsView(View):
     template_name = "mysite/reports.html"
 
-    @method_decorator(login_required())
+    @method_decorator(login_required)
     def get(self, request):
         person = Person.objects.get(user=request.user)
         budgets = Budget.objects.filter(person=person)
         return render(request, self.template_name, {'budgets': budgets, 'person':person})
 
 
-class Logout(View):
-
-    def get(self, request):
-        logout(request)
-        return HttpResponseRedirect(reverse("MySite:login"))
+def log_out(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("MySite:login"))

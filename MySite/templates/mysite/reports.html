@@ -3,32 +3,31 @@
 
 {% block content %}
 <div class="container">
-      <div class="content">
+    <div class="content">
         <h2>Reports</h2>
 
+        {% for budget in budgets %}
         <div class="report">
-            {% for budget in budgets %}
             <h3>{{ budget.title}}</h3>
             <p>Income: <b>{{ budget.income }}</b></p>
 
             <table class="table">
-            <tr>
-              <th class="start">Expense</th>
-              <th class="mid">Cost (#)</th>
-              <th class="end">Date</th>
-            </tr>
-            {% for expense in budget.expenses.all %}
-            <tr>
-              <td class="start">{{ expense.title }}</td>
-              <td class="mid">{{ expense.cost }}</td>
-              <td class="end">{{ expense.date }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+                <tr>
+                    <th class="start">Expense</th>
+                    <th class="mid">Cost (#)</th>
+                    <th class="end">Date</th>
+                </tr>
+                {% for expense in budget.expenses.all %}
+                <tr>
+                    <td class="start">{{ expense.title }}</td>
+                    <td class="mid">{{ expense.cost }}</td>
+                    <td class="end">{{ expense.date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
             <h4>Total Cost of Expenses: #{{ budget.total_cost }}</h4>
-            {% endfor %}
         </div>
-
-      </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock content %}

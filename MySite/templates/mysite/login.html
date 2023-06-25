@@ -11,6 +11,12 @@
           <form method="post" action="" id="loginForm" class="form">
             {% csrf_token %}
             <h3>Login</h3>
+            {% for msg in messages %}
+            <div>
+            <p style="color:white; margin: 15px; padding: 15px 30px;
+             background-color: rgb(94, 94, 131); border-radius: 10px;">{{ msg }}</p>
+          </div>
+            {% endfor %}
             <div>
               <input type="text" name="username" placeholder="Username" required>
             </div>
@@ -23,6 +29,12 @@
           <form method="post" action="{% url 'MySite:register' %}" id="registerForm" class="form hidden">
             {% csrf_token %}
             <h3>Register</h3>
+            {% for msg in messages %}
+            <div>
+            <p style="color:white; margin: 15px; padding: 15px 30px;
+             background-color: rgb(94, 94, 131); border-radius: 10px;">{{ msg }}</p>
+          </div>
+            {% endfor %}
             <div>
               <input type="text" name="full_name" placeholder="Full Name" required>
             </div>
